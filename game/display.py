@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 import sqlite3
@@ -426,16 +427,22 @@ class HighscoreSection:
 class GameDatabase:
 
     def __init__(self):
-        self.db_name = settings.DATABASE
-        self.db_conn = sqlite3.connect(self.db_name)
+        self._check_dir(settings.DATABASE)
+        self.db_conn = sqlite3.connect(settings.DATABASE)
         self.db_curs = self.db_conn.cursor()
         self.create_table()
+
+    def _check_dir(self, database):
+        """Create directory if not exists"""
+        if not os.path.exists(os.path.dirname(database)):
+            os.mkdir(os.path.dirname(database))
 
     def create_table(self):
         """Creates a new table if it doesn't exist."""
         query = (
             "CREATE TABLE IF NOT EXISTS highscore"
-            "(score int, player text, date text)")
+            "(score int, player text, date text)"
+        )
         self.db_curs.execute(query)
         self.db_conn.commit()
 
