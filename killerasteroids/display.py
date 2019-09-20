@@ -48,19 +48,6 @@ class GameLoop:
             self.player_sprite.life, self.player_sprite.score, self.level
         )
 
-    def debug(self):
-        """Print debugging information"""
-        os.system("clear")
-        print("DEBUGGING INFORMATIO")
-        print("Active sprites in each Group.")
-        print(f"space_group: {len(self.space_group)}")
-        print(f"player_group: {len(self.player_group)}")
-        print(f"laser_group: {len(self.laser_group)}")
-        print(f"player_stats_group: {len(self.player_stats_group)}")
-        print(f"asteroid_group: {len(self.asteroid_group)}")
-        print(f"powerup_group: {len(self.powerup_group)}")
-        print(f"effect_group: {len(self.effect_group)}")
-
     def animate_groups(self):
         """Animate the sprites in the groups in this method."""
         for space in self.space_group.sprites():
@@ -200,8 +187,6 @@ class GameLoop:
         self.bg_music.play()
 
         while self.playing:
-            # Debugging information.
-            # self.debug()
 
             # Set the maximum frame rate.
             self.frame_rate.tick(settings.FPS)

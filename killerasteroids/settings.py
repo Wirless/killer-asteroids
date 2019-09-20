@@ -26,8 +26,6 @@ FONT_DIR = os.path.join(DATA_DIR, "font")
 SCORE_DIR = os.path.join(DATA_DIR, "score")
 AUDIO_DIR = os.path.join(DATA_DIR, "audio")
 IMAGE_DIR = os.path.join(DATA_DIR, "img")
-print(BASE_DIR)
-print(DATA_DIR)
 
 # The font that will be used in game.
 FONT = os.path.join(FONT_DIR, "commodore64.ttf")
