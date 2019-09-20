@@ -1,2 +1,4 @@
 __pycache__/
+score/
 *.db
+*.egg-info

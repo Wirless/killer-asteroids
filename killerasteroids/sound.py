@@ -1,4 +1,5 @@
 import os.path
+
 import pygame
 
 
@@ -15,15 +16,17 @@ class SoundEffect:
 
     def load_sound(self, file):
         """This will load the sound effect from the file."""
+
         class NoneSound:
             def play(self):
                 pass
+
         if not pygame.mixer or not pygame.mixer.get_init():
             return NoneSound()
         try:
             sound = pygame.mixer.Sound(file)
         except pygame.error:
-            print('Cannot load sound:', file)
+            print("Cannot load sound:", file)
             raise SystemExit
         return sound
 

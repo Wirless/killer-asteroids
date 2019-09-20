@@ -1,14 +1,16 @@
 import os
+import sqlite3
 import sys
 import time
-import sqlite3
+
 import pygame
 from pygame import locals
+
 from . import settings
 from .level import LevelDesign
+from .object import Explosion, Laser, Player, PowerUpEffect, Space
 from .sound import BackgroundMusic, SoundEffect
 from .text import BannerText, GenericText, MenuOptionText
-from .object import Space, Player, Laser, Explosion, PowerUpEffect
 
 
 class GameLoop:
@@ -30,8 +32,8 @@ class GameLoop:
         self.player_sprite = Player(settings.PLAYER_SPRITE)
         self.space_sprites = [
             Space([0, 0], settings.SPACE_SPRITE),
-            Space([640, 0], settings.SPACE_SPRITE)
-            ]
+            Space([640, 0], settings.SPACE_SPRITE),
+        ]
         # Generate level.
         self.level = LevelDesign()
         self.enemies, self.powerups = self.level.get_level()
@@ -43,14 +45,12 @@ class GameLoop:
         self.space_group = pygame.sprite.RenderPlain(self.space_sprites)
         self.player_group = pygame.sprite.RenderPlain(self.player_sprite)
         self.player_stats_group = pygame.sprite.RenderPlain(
-            self.player_sprite.life,
-            self.player_sprite.score,
-            self.level
-            )
+            self.player_sprite.life, self.player_sprite.score, self.level
+        )
 
     def debug(self):
         """Print debugging information"""
-        os.system('clear')
+        os.system("clear")
         print("DEBUGGING INFORMATIO")
         print("Active sprites in each Group.")
         print(f"space_group: {len(self.space_group)}")
@@ -130,7 +130,9 @@ class GameLoop:
                 PowerUpEffect(
                     self.player_sprite,
                     settings.POWER_UP_EFFECT_SPRITE,
-                    pygame.time.get_ticks()))
+                    pygame.time.get_ticks(),
+                )
+            )
 
             for powerup in self.effect_group.sprites():
                 powerup.sound_effect()
@@ -148,7 +150,9 @@ class GameLoop:
                 Explosion(
                     self.player_sprite,
                     settings.EXPLOSION_SPRITE,
-                    pygame.time.get_ticks()))
+                    pygame.time.get_ticks(),
+                )
+            )
 
             for explosion in self.effect_group.sprites():
                 explosion.sound_effect()
@@ -174,7 +178,9 @@ class GameLoop:
                     Explosion(
                         asteroid_position[0],  # The list has only one item.
                         settings.EXPLOSION_SPRITE,
-                        pygame.time.get_ticks()))
+                        pygame.time.get_ticks(),
+                    )
+                )
 
             for explosion in self.effect_group.sprites():
                 explosion.sound_effect()
@@ -203,26 +209,32 @@ class GameLoop:
             # Handle all user events.
             for event in pygame.event.get():
                 # Exit anytime by pressing escape or the window's close button.
-                if (event.type == locals.QUIT or
-                        event.type == locals.KEYDOWN and
-                        event.key == locals.K_ESCAPE):
+                if (
+                    event.type == locals.QUIT
+                    or event.type == locals.KEYDOWN
+                    and event.key == locals.K_ESCAPE
+                ):
                     sys.exit()
                 # Makes the spaceship move smoother.
                 if event.type == locals.KEYUP:
                     # The spaceship stops moving if the keys are released.
-                    if (event.key == locals.K_UP or
-                            event.key == locals.K_DOWN or
-                            event.key == locals.K_LEFT or
-                            event.key == locals.K_RIGHT):
+                    if (
+                        event.key == locals.K_UP
+                        or event.key == locals.K_DOWN
+                        or event.key == locals.K_LEFT
+                        or event.key == locals.K_RIGHT
+                    ):
                         for spaceship in self.player_group.sprites():
                             spaceship.stop_moving(event.key)
                 # Makes the spaceship move.
                 if event.type == locals.KEYDOWN:
                     # Control the spaceship.
-                    if (event.key == locals.K_UP or
-                            event.key == locals.K_DOWN or
-                            event.key == locals.K_LEFT or
-                            event.key == locals.K_RIGHT):
+                    if (
+                        event.key == locals.K_UP
+                        or event.key == locals.K_DOWN
+                        or event.key == locals.K_LEFT
+                        or event.key == locals.K_RIGHT
+                    ):
                         for spaceship in self.player_group.sprites():
                             spaceship.move(event.key)
                     # Fire weapon.
@@ -232,7 +244,9 @@ class GameLoop:
                         self.laser_group.add(
                             Laser(
                                 settings.LASER_SPRITE,
-                                self.player_sprite.rect.center))
+                                self.player_sprite.rect.center,
+                            )
+                        )
                         for laser in self.laser_group.sprites():
                             laser.sound_effect()
                     # Pause game.
@@ -246,7 +260,7 @@ class GameLoop:
                             self.asteroid_group,
                             self.powerup_group,
                             self.effect_group,
-                            ).main()
+                        ).main()
                         self.bg_music.play()  # Start music when game resumes.
                         if value == "RESTART GAME":
                             print(value)
@@ -274,7 +288,6 @@ class GameLoop:
 
 
 class PauseMenu:
-
     def __init__(self, screen, *args):
         self.screen = screen
         self.clock = pygame.time.Clock()
@@ -283,8 +296,8 @@ class PauseMenu:
 
         # Pause menu options.
         self.options = [
-            MenuOptionText(15, 'RESUME', [283, 180], True),
-            MenuOptionText(15, 'QUIT', [295, 200], False),
+            MenuOptionText(15, "RESUME", [283, 180], True),
+            MenuOptionText(15, "QUIT", [295, 200], False),
         ]
 
         self.text_group = pygame.sprite.RenderPlain(self.banner)
@@ -307,10 +320,10 @@ class PauseMenu:
 
             self.choice_sfx.play()
 
-            if current == 'RESUME':
+            if current == "RESUME":
                 self.options[0].change_state()
                 self.options[1].change_state()
-            elif current == 'QUIT':
+            elif current == "QUIT":
                 self.options[0].change_state()
                 self.options[1].change_state()
 
@@ -318,17 +331,17 @@ class PauseMenu:
 
             self.choice_sfx.play()
 
-            if current == 'RESUME':
+            if current == "RESUME":
                 self.options[0].change_state()
                 self.options[1].change_state()
-            elif current == 'QUIT':
+            elif current == "QUIT":
                 self.options[0].change_state()
                 self.options[1].change_state()
 
         elif key == locals.K_RETURN:
-            if current == 'RESUME':
+            if current == "RESUME":
                 return "RESUME GAME"
-            elif current == 'QUIT':
+            elif current == "QUIT":
                 sys.exit()
 
     def dim_screen(self):
@@ -346,17 +359,21 @@ class PauseMenu:
         while True:
             self.clock.tick(settings.FPS)
             for event in pygame.event.get():
-                if (event.type == locals.QUIT or
-                        event.type == locals.KEYDOWN and
-                        event.key == locals.K_ESCAPE):
+                if (
+                    event.type == locals.QUIT
+                    or event.type == locals.KEYDOWN
+                    and event.key == locals.K_ESCAPE
+                ):
                     sys.exit()
                 if event.type == locals.KEYDOWN:
                     if event.key == locals.K_p:
                         return
                 if event.type == locals.KEYDOWN:
-                    if (event.key == locals.K_UP or
-                            event.key == locals.K_DOWN or
-                            locals.K_RETURN):
+                    if (
+                        event.key == locals.K_UP
+                        or event.key == locals.K_DOWN
+                        or locals.K_RETURN
+                    ):
                         choice = self.update_selected_option(event.key)
                         if choice == "RESUME GAME":
                             return
@@ -382,7 +399,6 @@ class PauseMenu:
 
 
 class HighscoreSection:
-
     def __init__(self, screen, group):
 
         self.screen = screen
@@ -390,7 +406,7 @@ class HighscoreSection:
         self.space_group = pygame.sprite.RenderPlain(self.space)
         self.db = GameDatabase()
         self.db.create_table()
-        self.title = GenericText(20, 'HIGHSCORE:', [250, 100])
+        self.title = GenericText(20, "HIGHSCORE:", [250, 100])
         self.text = self.db.get_highscore_list()
         self.text_group = pygame.sprite.RenderPlain(self.title, self.text)
 
@@ -400,9 +416,11 @@ class HighscoreSection:
             pygame.time.Clock().tick(settings.FPS)
 
             for event in pygame.event.get():
-                if (event.type == locals.QUIT or
-                        event.type == locals.KEYDOWN and
-                        event.key == locals.K_ESCAPE):
+                if (
+                    event.type == locals.QUIT
+                    or event.type == locals.KEYDOWN
+                    and event.key == locals.K_ESCAPE
+                ):
                     sys.exit()
                 if event.type == locals.KEYDOWN:
                     if event.key == locals.K_BACKSPACE:
@@ -425,7 +443,6 @@ class HighscoreSection:
 
 
 class GameDatabase:
-
     def __init__(self):
         self._check_dir(settings.DATABASE)
         self.db_conn = sqlite3.connect(settings.DATABASE)
@@ -446,7 +463,7 @@ class GameDatabase:
         self.db_curs.execute(query)
         self.db_conn.commit()
 
-    def save_highscore(self, score, player='anonymous'):
+    def save_highscore(self, score, player="anonymous"):
         try:
             date = time.strftime("%Y/%m/%d")
             query = "INSERT INTO highscore VALUES (?,?,?)"
@@ -501,7 +518,6 @@ class GameDatabase:
 
 
 class HelpSection:
-
     def __init__(self, screen, group):
 
         self.screen = screen
@@ -509,21 +525,21 @@ class HelpSection:
         self.space_group = pygame.sprite.RenderPlain(self.space)
 
         self.text = [
-            GenericText(20, 'Mission:', [50, 30]),
-            GenericText(15, ' Destroy all asteroids', [50, 55]),
-            GenericText(15, ' and beat the highscore.', [50, 70]),
-            GenericText(20, 'Points:', [50, 100]),
-            GenericText(15, ' Shoot = -1 point', [50, 125]),
-            GenericText(15, ' Asteroid = +100 points', [50, 140]),
-            GenericText(15, ' Level up = +1000 points', [50, 155]),
-            GenericText(20, 'Controls:', [50, 185]),
-            GenericText(15, ' BACKSPACE - Go back', [50, 210]),
-            GenericText(15, ' ESCAPE - Exit anytime', [50, 225]),
-            GenericText(15, ' SPACE - Shoot', [50, 240]),
-            GenericText(15, ' ENTER - Enter', [50, 255]),
-            GenericText(15, ' ARROWS - Control spaceship', [50, 270]),
-            GenericText(15, ' P - Pause game', [50, 285]),
-            ]
+            GenericText(20, "Mission:", [50, 30]),
+            GenericText(15, " Destroy all asteroids", [50, 55]),
+            GenericText(15, " and beat the highscore.", [50, 70]),
+            GenericText(20, "Points:", [50, 100]),
+            GenericText(15, " Shoot = -1 point", [50, 125]),
+            GenericText(15, " Asteroid = +100 points", [50, 140]),
+            GenericText(15, " Level up = +1000 points", [50, 155]),
+            GenericText(20, "Controls:", [50, 185]),
+            GenericText(15, " BACKSPACE - Go back", [50, 210]),
+            GenericText(15, " ESCAPE - Exit anytime", [50, 225]),
+            GenericText(15, " SPACE - Shoot", [50, 240]),
+            GenericText(15, " ENTER - Enter", [50, 255]),
+            GenericText(15, " ARROWS - Control spaceship", [50, 270]),
+            GenericText(15, " P - Pause game", [50, 285]),
+        ]
         self.text_group = pygame.sprite.RenderPlain(self.text)
 
     def main(self):
@@ -532,9 +548,11 @@ class HelpSection:
             pygame.time.Clock().tick(settings.FPS)
 
             for event in pygame.event.get():
-                if (event.type == locals.QUIT or
-                        event.type == locals.KEYDOWN and
-                        event.key == locals.K_ESCAPE):
+                if (
+                    event.type == locals.QUIT
+                    or event.type == locals.KEYDOWN
+                    and event.key == locals.K_ESCAPE
+                ):
                     sys.exit()
                 if event.type == locals.KEYDOWN:
                     if event.key == locals.K_BACKSPACE:
@@ -557,12 +575,11 @@ class HelpSection:
 
 
 class GameOver:
-
     def __init__(self, screen, group):
         self.screen = screen
         self.space = group.sprites()  # The scrolling background.
         self.banner = BannerText(25, "GAME OVER", [0, 50])
-        self.title = GenericText(20, 'HIGHSCORE:', [250, 100])
+        self.title = GenericText(20, "HIGHSCORE:", [250, 100])
         self.highscore = GameDatabase().get_highscore_list()
         self.clock = pygame.time.Clock()
         self.space_group = pygame.sprite.RenderPlain(self.space)
@@ -585,13 +602,17 @@ class GameOver:
             self.clock.tick(settings.FPS)
 
             for event in pygame.event.get():
-                if (event.type == locals.QUIT or
-                        event.type == locals.KEYDOWN and
-                        event.key == locals.K_ESCAPE):
+                if (
+                    event.type == locals.QUIT
+                    or event.type == locals.KEYDOWN
+                    and event.key == locals.K_ESCAPE
+                ):
                     sys.exit()
                 if event.type == locals.KEYDOWN:
-                    if (event.key == locals.K_RETURN or
-                            event.key == locals.K_BACKSPACE):
+                    if (
+                        event.key == locals.K_RETURN
+                        or event.key == locals.K_BACKSPACE
+                    ):
                         return
 
             # Animate space.

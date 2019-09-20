@@ -1,12 +1,10 @@
-#!/usr/bin/env python3.6
-
 import unittest
-from game import settings
-from game.text import BannerText, MenuOptionText
+
+from killerasteroids import settings
+from killerasteroids.text import BannerText, MenuOptionText
 
 
 class BannerTextTest(unittest.TestCase):
-
     def setUp(self):
         self.text = BannerText(25, "GAME OVER", [0, 50])
 
@@ -19,7 +17,6 @@ class BannerTextTest(unittest.TestCase):
 
 
 class MenuOptionTextTest(unittest.TestCase):
-
     def setUp(self):
         self.text = MenuOptionText(10, "Test", [1, 1], True)
 
@@ -30,7 +27,7 @@ class MenuOptionTextTest(unittest.TestCase):
         # Get the color at the position (1, 1) on the Surfaces.
         self.color = self.text.image.get_at_mapped((1, 1))
         # Convert RGB int to RGB.
-        b, g, r = [(self.color >> (8*i)) & 255 for i in range(3)]
+        b, g, r = [(self.color >> (8 * i)) & 255 for i in range(3)]
         # Check if it's the right color.
         self.assertEqual((r, g, b), settings.ACTIVE_OPTION)
 

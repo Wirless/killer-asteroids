@@ -8,9 +8,9 @@ WIDTH = 640
 HEIGHT = 400
 
 LIMIT_UP = 35
-LIMIT_DOWN = HEIGHT-40
+LIMIT_DOWN = HEIGHT - 40
 LIMIT_LEFT = 0
-LIMIT_RIGHT = WIDTH-100
+LIMIT_RIGHT = WIDTH - 100
 
 # The name of the game.
 CAPTION = "KILLER ASTEROIDS"
@@ -20,18 +20,20 @@ BG_COLOR = (0, 0, 15)
 TEXT_COLOR = (255, 255, 255)
 ACTIVE_OPTION = (0, 255, 0)
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ASSETS_ROOT = os.path.join(BASE_DIR, 'assets')
-FONT_DIR = os.path.join(ASSETS_ROOT, 'font')
-DATA_DIR = os.path.join(ASSETS_ROOT, 'data')
-AUDIO_DIR = os.path.join(ASSETS_ROOT, 'audio')
-IMAGE_DIR = os.path.join(ASSETS_ROOT, 'img')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+FONT_DIR = os.path.join(DATA_DIR, "font")
+SCORE_DIR = os.path.join(DATA_DIR, "score")
+AUDIO_DIR = os.path.join(DATA_DIR, "audio")
+IMAGE_DIR = os.path.join(DATA_DIR, "img")
+print(BASE_DIR)
+print(DATA_DIR)
 
 # The font that will be used in game.
 FONT = os.path.join(FONT_DIR, "commodore64.ttf")
 
 # Database for highscores.
-DATABASE = os.path.join(DATA_DIR, 'highscore.db')
+DATABASE = os.path.join(SCORE_DIR, "highscore.db")
 
 # Background music.
 BG_MUSIC = os.path.join(AUDIO_DIR, "bgmusic.ogg")
@@ -49,23 +51,30 @@ START_GAME = os.path.join(AUDIO_DIR, "startgame.wav")
 
 # Image files for all the sprites.
 POWER_UP_SPRITE = {
-    'file': os.path.join(IMAGE_DIR, 'powerup.png'),
-    'size': [15, 15]}
+    "file": os.path.join(IMAGE_DIR, "powerup.png"),
+    "size": [15, 15],
+}
 POWER_UP_EFFECT_SPRITE = {
-    'file': os.path.join(IMAGE_DIR, 'powerupeffect.png'),
-    'size': [45, 45]}
+    "file": os.path.join(IMAGE_DIR, "powerupeffect.png"),
+    "size": [45, 45],
+}
 ASTEROID_SPRITE = {
-    'file': os.path.join(IMAGE_DIR, 'asteroid.png'),
-    'size': [35, 35]}
+    "file": os.path.join(IMAGE_DIR, "asteroid.png"),
+    "size": [35, 35],
+}
 LASER_SPRITE = {
-    'file': os.path.join(IMAGE_DIR, 'bluelaser.png',),
-    'size': [16, 16]}
+    "file": os.path.join(IMAGE_DIR, "bluelaser.png"),
+    "size": [16, 16],
+}
 EXPLOSION_SPRITE = {
-    'file': os.path.join(IMAGE_DIR, 'explosion.png',),
-    'size': [64, 64]}
+    "file": os.path.join(IMAGE_DIR, "explosion.png"),
+    "size": [64, 64],
+}
 SPACE_SPRITE = {
-    'file': os.path.join(IMAGE_DIR, 'space.png',),
-    'size': [640, 400]}
+    "file": os.path.join(IMAGE_DIR, "space.png"),
+    "size": [640, 400],
+}
 PLAYER_SPRITE = {
-    'file': os.path.join(IMAGE_DIR, 'spaceship2.png',),
-    'size': [92, 36]}
+    "file": os.path.join(IMAGE_DIR, "spaceship2.png"),
+    "size": [92, 36],
+}

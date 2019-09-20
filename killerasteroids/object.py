@@ -1,7 +1,9 @@
 import os
 import random
+
 import pygame
 from pygame import locals
+
 from . import settings
 from .sound import SoundEffect
 
@@ -12,8 +14,8 @@ class AnimatedObject(pygame.sprite.Sprite):
     def __init__(self, sprite, fps=10):
         super().__init__()
 
-        self.file = sprite['file']
-        self.size = sprite['size']
+        self.file = sprite["file"]
+        self.size = sprite["size"]
         self._images = self.load_sliced_sprites(self.size, self.file)
         self.image = pygame.Surface(self.size).convert()
         self.rect = self.image.get_rect()
@@ -48,8 +50,8 @@ class AnimatedObject(pygame.sprite.Sprite):
         master_image = pygame.image.load(file).convert_alpha()
         master_width, master_height = master_image.get_size()
 
-        for i in range(int(master_width/w)):
-            images.append(master_image.subsurface((i*w, 0, w, h)))
+        for i in range(int(master_width / w)):
+            images.append(master_image.subsurface((i * w, 0, w, h)))
         return images
 
 
@@ -229,7 +231,6 @@ class PowerUpEffect(AnimatedObject):
 
 
 class Asteroid(AnimatedObject):
-
     def __init__(self, sprite, position, speed, fps=10):
         super().__init__(sprite, fps)
         self.rect.topleft = position
@@ -250,7 +251,6 @@ class Asteroid(AnimatedObject):
 
 
 class PowerUp(AnimatedObject):
-
     def __init__(self, sprite, position, fps=10):
         super().__init__(sprite, fps)
         self.rect.topleft = position
@@ -263,7 +263,6 @@ class PowerUp(AnimatedObject):
 
 
 class Score(pygame.sprite.Sprite):
-
     def __init__(self):
         super().__init__()
         self.score = 0
@@ -291,7 +290,6 @@ class Score(pygame.sprite.Sprite):
 
 
 class Life(pygame.sprite.Sprite):
-
     def __init__(self):
         super().__init__()
         self.life = 3

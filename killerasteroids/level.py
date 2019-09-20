@@ -1,12 +1,13 @@
 import random
+
 import pygame
+
 from . import settings
-from .sound import SoundEffect
 from .object import Asteroid, PowerUp
+from .sound import SoundEffect
 
 
 class LevelDesign(pygame.sprite.Sprite):
-
     def __init__(self):
         super().__init__()
         self.current_level = 1

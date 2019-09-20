@@ -1,19 +1,16 @@
-#!/usr/bin/env python3.6
-
 import unittest
+
 import pygame
-from game import settings
-from game import object
+
+from killerasteroids import object, settings
 
 
 class PowerUpTest(unittest.TestCase):
-
     def setUp(self):
         pass
 
 
 class ScoreTest(unittest.TestCase):
-
     def setUp(self):
         pygame.init()
         self.obj = object.Score()
@@ -35,7 +32,6 @@ class ScoreTest(unittest.TestCase):
 
 
 class LifeTest(unittest.TestCase):
-
     def setUp(self):
         pygame.init()
         self.obj = object.Life()
