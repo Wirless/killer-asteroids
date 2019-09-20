@@ -1,65 +1,88 @@
 import unittest
+from unittest.mock import patch
 
 import pygame
 
 from killerasteroids import object, settings
 
 
-class PowerUpTest(unittest.TestCase):
-    def setUp(self):
-        pass
-
-
 class ScoreTest(unittest.TestCase):
     def setUp(self):
         pygame.init()
-        self.obj = object.Score()
+        self.test = object.Score()
+
+    def test_score_start_at_zero(self):
+        self.assertEqual(self.test.score, 0)
+        self.assertEqual(self.test.text, f"SCORE: 0")
+
+    def test_attribute_font_is_pygame_font(self):
+        self.assertIsInstance(self.test.font, pygame.font.Font)
+
+    def test_attribute_image_is_pygame_surface(self):
+        self.assertIsInstance(self.test.image, pygame.Surface)
+
+    def test_attribute_rect_is_pygame_rect(self):
+        self.assertIsInstance(self.test.rect, pygame.Rect)
+
+    def test_rect_position(self):
+        self.assertEqual(self.test.rect.topleft, (10, 10))
 
     def test_update(self):
-        """Test so the score text is updating correctly."""
-        self.obj.score = 100
-        self.obj.update()
-        self.assertEqual(self.obj.text, f"SCORE: 100")
+        self.test.score = 100
+        self.test.update()
+        self.assertEqual(self.test.text, f"SCORE: 100")
 
     def test_fire_score_when_zero(self):
-        self.obj.game_score("fire")
-        self.assertEqual(self.obj.score, 0)
+        self.test.game_score("fire")
+        self.assertEqual(self.test.score, 0)
 
     def test_fire_score_when_above_zero(self):
-        self.obj.score = 1
-        self.obj.game_score("fire")
-        self.assertEqual(self.obj.score, 0)
+        self.test.score = 1
+        self.test.game_score("fire")
+        self.assertEqual(self.test.score, 0)
 
 
 class LifeTest(unittest.TestCase):
     def setUp(self):
         pygame.init()
-        self.obj = object.Life()
+        self.test = object.Life()
 
     def test_life_at_start(self):
-        """Test if there are 3 extra lives at the start of the game."""
-        self.assertEqual(self.obj.life, 3)
+        self.assertEqual(self.test.life, 3)
 
     def test_life_text_at_start(self):
-        """Test the display text of the number of lives."""
-        self.assertEqual(self.obj.text, "LIFE x 3")
+        self.assertEqual(self.test.text, "LIFE x 3")
 
-    def test_lose_life(self):
-        """Test if the starting life decreaces by one if player loses life."""
-        self.obj.lose_life()
-        self.assertEqual(self.obj.life, 2)
+    def test_attribute_font_is_pygame_font(self):
+        self.assertIsInstance(self.test.font, pygame.font.Font)
 
-    def test_extra_life(self):
-        """Starting life increaces by one if player gain extra life."""
-        self.obj.extra_life()
-        self.assertEqual(self.obj.life, 4)
+    def test_attribute_image_is_pygame_surface(self):
+        self.assertIsInstance(self.test.image, pygame.Surface)
 
-    def test_update(self):
-        """Testing that the extra life indicator is updating correctly."""
-        self.obj.extra_life()
-        self.obj.update()
-        self.assertEqual(self.obj.text, "LIFE x 4")
+    def test_attribute_rect_is_pygame_rect(self):
+        self.assertIsInstance(self.test.rect, pygame.Rect)
 
+    def test_rect_position(self):
+        self.assertEqual(self.test.rect.topleft, (530, 10))
 
-if __name__ == "__main__":
-    unittest.main()
+    def test_sound_effect_files(self):
+        lose_file = self.test.lose_sfx.__dict__["file_exists"]
+        gain_file = self.test.gain_sfx.__dict__["file_exists"]
+        self.assertTrue(lose_file)
+        self.assertTrue(gain_file)
+
+    @patch("killerasteroids.object.Life.lose_life_sfx")
+    def test_lose_life(self, mock_sfx):
+        self.test.lose_life()
+        self.assertEqual(self.test.life, 2)
+
+    @patch("killerasteroids.object.Life.gain_life_sfx")
+    def test_extra_life(self, mock_sfx):
+        self.test.extra_life()
+        self.assertEqual(self.test.life, 4)
+
+    @patch("killerasteroids.object.Life.gain_life_sfx")
+    def test_update(self, mock_sfx):
+        self.test.extra_life()
+        self.test.update()
+        self.assertEqual(self.test.text, "LIFE x 4")
