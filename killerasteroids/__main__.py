@@ -1,11 +1,11 @@
 import pygame
 
-from .menu import MainMenu
+from .menu import MenuScreen
 
 
 def main():
-    new = MainMenu()
-    new.main()
+    new = MenuScreen()
+    new.game_menu()
 
 
 if __name__ == "__main__":
