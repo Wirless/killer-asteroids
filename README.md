@@ -1,4 +1,4 @@
-# KILLER ASTEROIDS
+# KILLER ASTEROIDS PS I have no fucking clue how to run this on windows hence this fork will be deleted as fuck xD
 
 > Shoot 'em up game created with pygame
 
